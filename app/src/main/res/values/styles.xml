@@ -11,6 +11,8 @@
     <style name="SignInTheme" parent="AppTheme" >
         <item name="colorPrimary">@android:color/transparent</item>
         <item name="android:colorBackground">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/primary_text_material_light</item>
+        <item name="android:textColorSecondary">@color/secondary_text_material_light</item>
     </style>
 
 </resources>
