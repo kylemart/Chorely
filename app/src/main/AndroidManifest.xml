@@ -17,10 +17,15 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login">
             <intent-filter>
-                <action android:name="ANDROID.INTENT.ACTION.MAIN"/>
-                <category android:name="ANDROID.INTENT.CATEGORY.LAUNCHER"/>
+                <action android:name="ANDROID.INTENT.ACTION.MAIN" />
+
+                <category android:name="ANDROID.INTENT.CATEGORY.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/SignInTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
