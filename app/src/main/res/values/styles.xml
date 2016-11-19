@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SignInTheme" parent="AppTheme" >
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="android:colorBackground">@color/colorPrimary</item>
+    </style>
+
 </resources>
