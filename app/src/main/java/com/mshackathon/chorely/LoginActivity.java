@@ -3,6 +3,7 @@ package com.mshackathon.chorely;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -49,7 +50,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * TODO: remove after connecting to a real authentication system.
      */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
+            "sourhead5@gmail.com:hiloo:Alex", "bar@example.com:world:Kyle"
     };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -80,7 +81,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     mEmailSignInButton.setEnabled(true);
                     mEmailSignInButton.setFocusable(true);
                 }else{
-                    if(mEmailSignInButton.isEnabled())mEmailSignInButton.setEnabled(false);
+                    if(mEmailSignInButton.isEnabled()){
+                        mEmailSignInButton.setEnabled(false);
+                        mEmailSignInButton.setFocusable(false);
+                    }
                 }
             }
         });
@@ -92,7 +96,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     mEmailSignInButton.setEnabled(true);
                     mEmailSignInButton.setFocusable(true);
                 }else{
-                    if(mEmailSignInButton.isEnabled())mEmailSignInButton.setEnabled(false);
+                    if(mEmailSignInButton.isEnabled()){
+                        mEmailSignInButton.setEnabled(false);
+                        mEmailSignInButton.setFocusable(false);
+                    }
                 }
             }
         });
@@ -102,7 +109,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                attemptLogin();
             }
         });
 
@@ -201,7 +208,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             focusView.requestFocus();
         } else {
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(email, password, new Intent(this, MainActivity.class));
             mAuthTask.execute((Void) null);
         }
     }
@@ -314,10 +321,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
+        private final Intent mIntent;
 
-        UserLoginTask(String email, String password) {
+        UserLoginTask(String email, String password, Intent intent) {
             mEmail = email;
             mPassword = password;
+            mIntent = intent;
         }
 
         @Override
@@ -338,6 +347,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     // Account exists, return true if the password matches.
                     if(pieces[1].equals(mPassword)){
                         //TODO: send name to new activity
+                        mIntent.putExtra("USER_NAME", name);
+                        startActivity(mIntent);
                     }
                 }
             }
