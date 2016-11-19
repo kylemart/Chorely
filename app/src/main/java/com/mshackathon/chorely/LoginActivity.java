@@ -66,32 +66,52 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
 
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        final Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+
+        populateAutoComplete();
+        mEmailView.setOnFocusChangeListener(new AutoCompleteTextView.OnFocusChangeListener(){
             @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
+            public void onFocusChange(View view, boolean bool){
+
+                if(signInPopulated()){
+                    mEmailSignInButton.setEnabled(true);
+                    mEmailSignInButton.setFocusable(true);
+                }else{
+                    if(mEmailSignInButton.isEnabled())mEmailSignInButton.setEnabled(false);
                 }
-                return false;
+            }
+        });
+        mPasswordView.setOnFocusChangeListener(new TextView.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean bool){
+
+                if(signInPopulated()){
+                    mEmailSignInButton.setEnabled(true);
+                    mEmailSignInButton.setFocusable(true);
+                }else{
+                    if(mEmailSignInButton.isEnabled())mEmailSignInButton.setEnabled(false);
+                }
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton.setEnabled(false);
+        mEmailSignInButton.setFocusable(false);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private boolean signInPopulated(){
+        return !mPasswordView.getText().toString().isEmpty() && !mEmailView.getText().toString().isEmpty();
     }
 
     private void populateAutoComplete() {
@@ -178,12 +198,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
@@ -317,9 +333,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
+                String name = pieces[2];
                 if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                    if(pieces[1].equals(mPassword)){
+                        //TODO: send name to new activity
+                    }
                 }
             }
 
